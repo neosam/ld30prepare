@@ -9,5 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 public class Hero extends AnimatedPhysicsActor {
     public Hero(PhysicsSharer physicsSharer, TextureAtlas textureAtlas) {
         super(physicsSharer, new Vector2(2, 4), textureAtlas, "hero_", "_");
+        activateAnimation("run");
     }
 }

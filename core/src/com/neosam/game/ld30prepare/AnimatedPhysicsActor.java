@@ -39,6 +39,7 @@ public class AnimatedPhysicsActor extends PhysicsActor {
 
     private void setupDefaultAnimations() {
         setupAnimation(0.1f, atlasPrefix + "idle" + atlasSuffix, "idle");
+        setupAnimation(0.05f, atlasPrefix + "run" + atlasSuffix, "run");
         activateAnimation("idle");
     }
 

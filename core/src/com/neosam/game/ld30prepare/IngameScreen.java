@@ -5,6 +5,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -26,6 +28,7 @@ public class IngameScreen implements Screen, PhysicsSharer {
     private TextureAtlas heroTextureAtlas;
 
     private Box2DDebugRenderer debugRenderer;
+    private MapController map;
 
     public IngameScreen() {
         final Viewport viewport = new ExtendViewport(DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -34,8 +37,13 @@ public class IngameScreen implements Screen, PhysicsSharer {
         Gdx.input.setInputProcessor(stage);
 
         setupPhysics();
+        setupMap();
         setupAnimations();
         setupActors();
+    }
+
+    private void setupMap() {
+        map = new MapController("map.tmx");
     }
 
     private void setupAnimations() {
@@ -44,6 +52,8 @@ public class IngameScreen implements Screen, PhysicsSharer {
 
     private void setupActors() {
         hero = new Hero(this, heroTextureAtlas);
+        final Vector2 spawnPoint = map.getTriggerPoint("player_spawn");
+        hero.getBody().setTransform(spawnPoint, 0);
         stage.addActor(hero);
     }
 
@@ -59,6 +69,7 @@ public class IngameScreen implements Screen, PhysicsSharer {
         world.step(delta, 2, 6);
         cameraUpdate();
         stage.act(delta);
+        map.draw(stage.getSpriteBatch());
         stage.draw();
         debugRenderer.render(world, stage.getViewport().getCamera().combined);
     }

@@ -44,4 +44,8 @@ abstract public class PhysicsActor extends Actor {
         setPosition(body.getPosition().x, body.getPosition().y);
         setSize(size.x, size.y);
     }
+
+    public Body getBody() {
+        return body;
+    }
 }
