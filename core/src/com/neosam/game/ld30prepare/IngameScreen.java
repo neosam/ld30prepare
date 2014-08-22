@@ -49,6 +49,7 @@ public class IngameScreen implements Screen, Sharer {
 
     private void setupMap() {
         map = new MapController("map.tmx");
+        map.preparePhysics(world);
     }
 
     private void setupAnimations() {
@@ -64,7 +65,7 @@ public class IngameScreen implements Screen, Sharer {
     }
 
     private void setupPhysics() {
-        world = new World(new Vector2(0, 0), true);
+        world = new World(new Vector2(0, -10), true);
         debugRenderer = new Box2DDebugRenderer();
 }
 
