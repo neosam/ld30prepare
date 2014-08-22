@@ -97,6 +97,15 @@ public class AnimatedPhysicsActor extends PhysicsActor {
         addAnimation(animationName, animation);
     }
 
+    public void startRun(AnimatedPhysicsActorDirection direction) {
+        setDirection(direction);
+        activateAnimation("run");
+    }
+
+    public void stopRun() {
+        activateAnimation("idle");
+    }
+
     public String getAtlasPrefix() {
         return atlasPrefix;
     }
@@ -111,5 +120,13 @@ public class AnimatedPhysicsActor extends PhysicsActor {
 
     public void setAtlasSuffix(String atlasSuffix) {
         this.atlasSuffix = atlasSuffix;
+    }
+
+    public AnimatedPhysicsActorDirection getDirection() {
+        return direction;
+    }
+
+    public void setDirection(AnimatedPhysicsActorDirection direction) {
+        this.direction = direction;
     }
 }

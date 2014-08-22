@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by neosam on 21.08.14.
  */
-public class IngameScreen implements Screen, PhysicsSharer {
+public class IngameScreen implements Screen, Sharer {
     final private static int DEFAULT_WIDTH = 30;
     final private static int DEFAULT_HEIGHT = 20;
 
@@ -30,12 +30,17 @@ public class IngameScreen implements Screen, PhysicsSharer {
     private Box2DDebugRenderer debugRenderer;
     private MapController map;
 
+
+
+    private Settings settings;
+
     public IngameScreen() {
         final Viewport viewport = new ExtendViewport(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         camera = (OrthographicCamera) viewport.getCamera();
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
 
+        settings = new Settings();
         setupPhysics();
         setupMap();
         setupAnimations();
@@ -55,6 +60,7 @@ public class IngameScreen implements Screen, PhysicsSharer {
         final Vector2 spawnPoint = map.getTriggerPoint("player_spawn");
         hero.getBody().setTransform(spawnPoint, 0);
         stage.addActor(hero);
+        stage.setKeyboardFocus(hero);
     }
 
     private void setupPhysics() {
@@ -115,5 +121,9 @@ public class IngameScreen implements Screen, PhysicsSharer {
 
     public World getWorld() {
         return world;
+    }
+
+    public Settings getSettings() {
+        return settings;
     }
 }
