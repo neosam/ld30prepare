@@ -2,6 +2,7 @@ package com.neosam.game.ld30prepare;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -35,6 +36,7 @@ public class IngameScreen implements Screen, Sharer {
 
     private Texture background;
     private float backgroundDelay = 0.9f;
+    final AssetManager assetManager = new AssetManager();
 
 
 
@@ -47,7 +49,11 @@ public class IngameScreen implements Screen, Sharer {
         Gdx.input.setInputProcessor(stage);
 
         settings = new Settings();
-        background = new Texture("./background.png");
+
+        assetManager.load("background.png", Texture.class);
+        assetManager.load("hero.txt", TextureAtlas.class);
+        assetManager.finishLoading();
+        background = assetManager.get("background.png", Texture.class);
         setupPhysics();
         setupMap();
         setupAnimations();
@@ -60,7 +66,7 @@ public class IngameScreen implements Screen, Sharer {
     }
 
     private void setupAnimations() {
-        heroTextureAtlas = new TextureAtlas("./hero.txt");
+        heroTextureAtlas = assetManager.get("hero.txt", TextureAtlas.class);
     }
 
     private void setupActors() {
