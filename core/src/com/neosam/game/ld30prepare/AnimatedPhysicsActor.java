@@ -21,12 +21,19 @@ public class AnimatedPhysicsActor extends PhysicsActor {
 
     private String atlasPrefix = "";
     private String atlasSuffix = "";
+    private Vector2 jumpImpulse = new Vector2(0, 50);
+    private Vector2 center;
+    private float maxSpeed = 30;
+    private boolean running = false;
+    private Vector2 runLeftImpulse = new Vector2(-2f, 0);
+    private Vector2 runRightImpulse = new Vector2(2f, 0);
 
     public AnimatedPhysicsActor(PhysicsSharer physicsSharer, Vector2 size, TextureAtlas textureAtlas, String atlasPrefix, String atlasSuffix) {
         super(physicsSharer, size);
         this.atlasSuffix =atlasSuffix;
         this.atlasPrefix = atlasPrefix;
         this.textureAtlas = textureAtlas;
+        center = new Vector2(size.x / 2, size.y / 2);
         setupDefaultAnimations();
 
     }
@@ -84,9 +91,27 @@ public class AnimatedPhysicsActor extends PhysicsActor {
     @Override
     public void act(float delta) {
         super.act(delta);
+        final float currentSpeed = getBody().getLinearVelocity().x;
+        final float currentUpperSpeed = getBody().getLinearVelocity().y;
+
         currentTime += delta;
         if (currentAnimation != null) {
             currentFrame = currentAnimation.getKeyFrame(currentTime);
+        }
+        if (running == true) {
+            if (direction == AnimatedPhysicsActorDirection.left) {
+                getBody().applyLinearImpulse(runLeftImpulse, center, true);
+            } else if (direction == AnimatedPhysicsActorDirection.right) {
+                getBody().applyLinearImpulse(runRightImpulse, center, true);
+            }
+        } else {
+            getBody().setLinearVelocity(0, currentUpperSpeed);
+        }
+
+        if (currentSpeed > maxSpeed) {
+            getBody().setLinearVelocity(maxSpeed, currentUpperSpeed);
+        } else if (currentSpeed < -maxSpeed) {
+            getBody().setLinearVelocity(-maxSpeed, currentUpperSpeed);
         }
     }
 
@@ -100,10 +125,16 @@ public class AnimatedPhysicsActor extends PhysicsActor {
     public void startRun(AnimatedPhysicsActorDirection direction) {
         setDirection(direction);
         activateAnimation("run");
+        running = true;
     }
 
     public void stopRun() {
         activateAnimation("idle");
+        running = false;
+    }
+
+    public void jump() {
+        getBody().applyLinearImpulse(jumpImpulse, center, true);
     }
 
     public String getAtlasPrefix() {

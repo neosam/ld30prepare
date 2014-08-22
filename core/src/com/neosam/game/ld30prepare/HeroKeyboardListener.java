@@ -22,6 +22,8 @@ public class HeroKeyboardListener extends InputListener {
             actor.startRun(AnimatedPhysicsActorDirection.left);
         } else if (keycode == settings.walkRightKey) {
             actor.startRun(AnimatedPhysicsActorDirection.right);
+        } else if (keycode == settings.jumpKey) {
+            actor.jump();
         } else {
             return false;
         }

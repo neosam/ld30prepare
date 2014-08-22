@@ -8,4 +8,5 @@ import com.badlogic.gdx.Input;
 public class Settings {
     final int walkLeftKey = Input.Keys.LEFT;
     final int walkRightKey = Input.Keys.RIGHT;
+    final int jumpKey = Input.Keys.UP;
 }

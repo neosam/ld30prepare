@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -30,6 +33,9 @@ public class IngameScreen implements Screen, Sharer {
     private Box2DDebugRenderer debugRenderer;
     private MapController map;
 
+    private Texture background;
+    private float backgroundDelay = 0.9f;
+
 
 
     private Settings settings;
@@ -41,6 +47,7 @@ public class IngameScreen implements Screen, Sharer {
         Gdx.input.setInputProcessor(stage);
 
         settings = new Settings();
+        background = new Texture("./background.png");
         setupPhysics();
         setupMap();
         setupAnimations();
@@ -65,18 +72,23 @@ public class IngameScreen implements Screen, Sharer {
     }
 
     private void setupPhysics() {
-        world = new World(new Vector2(0, -10), true);
+        world = new World(new Vector2(0, -100), true);
         debugRenderer = new Box2DDebugRenderer();
 }
 
     @Override
     public void render(float delta) {
+        final Batch batch = stage.getSpriteBatch();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
+        batch.draw(background, backgroundDelay * camera.position.x - 15, backgroundDelay * camera.position.y - 10, 40, 40);
+        batch.end();
+
         world.step(delta, 2, 6);
         cameraUpdate();
         stage.act(delta);
-        map.draw(stage.getSpriteBatch());
+        map.draw(batch);
         stage.draw();
         debugRenderer.render(world, stage.getViewport().getCamera().combined);
     }

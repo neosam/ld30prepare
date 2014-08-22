@@ -15,7 +15,6 @@ public class Hero extends AnimatedPhysicsActor {
 
     public Hero(Sharer sharer, TextureAtlas textureAtlas) {
         super(sharer, new Vector2(2, 4), textureAtlas, "hero_", "_");
-        activateAnimation("run");
         settings = sharer.getSettings();
 
         addListener(new HeroKeyboardListener(settings));
